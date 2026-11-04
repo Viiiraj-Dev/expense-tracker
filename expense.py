@@ -1,6 +1,6 @@
 class Expense:
     def __init__(self, amount, category, note=""):
-        if amount <0:
+        if amount <=0:
             raise ValueError("Amount Must Be Positive")
         else:
             self.amount = amount
