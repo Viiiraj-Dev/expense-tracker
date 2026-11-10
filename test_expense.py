@@ -19,4 +19,18 @@ def test_zero_amount():
 
 def test_save_and_load(tmp_path):
     path = tmp_path / "data.json"
-    save_expenses([Expense(100, "")])
+    save_expenses([Expense(100, "food", "Lunch")], path)
+    loaded = load_expenses(path)
+    assert len(loaded) == 1
+    assert loaded[0].amount == 100
+
+def test_load_missing_file(tmp_path):
+    assert load_expenses(tmp_path / "nothing.json") == []
+
+def test_save_and_load_2exp(tmp_path):
+    path = tmp_path / "data.json"
+    save_expenses([Expense(200, "travel", "Park"), Expense(300, "food", "Dinner")], path)
+    loaded = load_expenses(path)
+    assert len(loaded) == 2
+    assert loaded[0].amount == 200
+    assert loaded[1].amount == 300
