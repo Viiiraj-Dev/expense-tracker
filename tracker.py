@@ -37,7 +37,8 @@ def main():
         for i, exp in enumerate(expenses, start=1):
             print(f"{i}. {exp.amount:.2f}  {exp.category}  {exp.note}")
     elif args.command == "total":
-        print("Total Amount:", total_amount(expenses, args.category))
+        total = total_amount(expenses, args.category)
+        print(f"Total Amount: {total:.2f}")
 
 if __name__ == "__main__":
     main()
