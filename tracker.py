@@ -1,6 +1,7 @@
 import argparse
 from expense import Expense
 from storage import save_expenses, load_expenses
+from report import total_amount
 
 FILE = "expenses.json"
 
@@ -14,7 +15,9 @@ def main():
     add.add_argument("note", nargs="?", default="")
 
     sub.add_parser("list", help="Show all expenses")
-    sub.add_parser("total", help="Show total sepnt")
+    
+    total = sub.add_parser("total", help="Show total spent")
+    total.add_argument("--category", help="Only count this category")
 
     args = parser.parse_args()
     expenses = load_expenses(FILE)
@@ -29,16 +32,12 @@ def main():
         print("Expense added.")
 
     elif args.command == "list":
-        loaded = load_expenses(FILE)
-        print("Expenses: ")
-        for e in loaded:
-            print(e.to_dict())
+        if not expenses:
+            print("No expenses yet.")
+        for i, exp in enumerate(expenses, start=1):
+            print(f"{i}. {exp.amount:.2f}  {exp.category}  {exp.note}")
     elif args.command == "total":
-        loaded = load_expenses(FILE)
-        total = 0
-        for e in loaded:
-            total+= e.amount
-        print(f"Total Expenses: {total}")
+        print("Total Amount:", total_amount(expenses, args.category))
 
 if __name__ == "__main__":
     main()
